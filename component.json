@@ -1,0 +1,23 @@
+{
+  "name": "list",
+  "repo": "chemzqm/list",
+  "description": "list view for add/remove/filter/reactive etc.",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "component/domify": "*",
+    "component/query": "*",
+    "component/emitter": "*",
+    "matthewmueller/array": "*",
+    "component/reactive": "*"
+  },
+  "development": {
+    "visionmedia/mocha": "*",
+    "chaijs/chai": "*"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ]
+}

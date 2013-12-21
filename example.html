@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example of list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="build/build.js"></script>
+    <style>
+      body {
+        padding:100px;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+    </ul>
+
+    <div class="user">
+      <h1>{first} {last}</h1>
+      <p>{first} is a {occupation}, {sex} is {age} years old.</p>
+      <button on-click="destroy">remove</button>
+    </div>
+    <script>
+      var Emitter = require('emitter');
+      var parent = document.querySelector('ul');
+      var List = require('list');
+      var tmpl = document.querySelector('.user');
+      tmpl.parentNode.removeChild(tmpl);
+      var list = new List(parent, tmpl);
+      list.destroy = function(e, node, obj) {
+        list.remove(obj);
+      }
+
+      function User(obj) {
+        var self = this;
+        for (var k in obj) this[k] = obj[k];
+        Object.observe(this, function(changes){
+          for (var i = 0; i < changes.length; i++) {
+            var change = changes[i];
+            self.emit('change ' + change.name);
+          }
+        });
+      }
+
+      Emitter(User.prototype);
+
+      var tobi = new User({
+        first: 'Tobi',
+        last: 'Holowaychuk',
+        occupation: 'ferret',
+        sex: 'male',
+        age: 2
+      });
+
+      var loki = new User({
+        first: 'Loki',
+        last: 'Holowaychuk',
+        occupation: 'ferret',
+        sex: 'male',
+        age: 3
+      });
+
+      var jane = new User({
+        first: 'Jane',
+        last: 'Holowaychuk',
+        occupation: 'ferret',
+        sex: 'femail',
+        age: 6
+      });
+
+      list.add(tobi);
+      list.add(loki);
+      list.add(jane);
+      setTimeout(function(){
+        tobi.first = 'Issac';
+        tobi.occupation= 'demage';
+      }, 1000)
+      setTimeout(function(){
+        var arr = [jane, loki, tobi];
+        list.bind(arr);
+      }, 2000)
+      setTimeout(function(){
+        list.sort(function(a, b) {
+          return a.age - b.age;
+        });
+      }, 3000)
+    </script>
+  </body>
+</html>
