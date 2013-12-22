@@ -1,9 +1,26 @@
 var array = require('array');
 var Emitter = require('emitter');
-var reactive = require('reactive');
+var Reactive = require('reactive');
 var domify = require ('domify');
 var query = require ('query');
+var removed = require('removed');
 var styles = window.getComputedStyle;
+
+//hack of reactive for unsubscribe event listeners
+Reactive.prototype.sub = function(prop, fn){
+  var subs = this.el.subs = this.el.subs || {};
+  subs[prop] = fn;
+  this.adapter.subscribe(this.model, prop, fn);
+  return this;
+}
+
+Reactive.prototype.unsubAll = function(){
+  var subs = this.el.subs;
+  for(var prop in subs){
+    this.unsub(prop, subs[prop]);
+  }
+  return this;
+};
 
 var events = [
   'change',
@@ -67,7 +84,7 @@ List.prototype.toView = function(el, obj) {
 }
 
 /**
- * Add obj to list with optional top
+ * Add obj to list with optional at top
  * @param {Object} obj
  * @param {Boolean} top
  * @api public
@@ -77,8 +94,13 @@ List.prototype.add = function(obj, top) {
   this.arr[method](obj);
   var node = this.tmpl.cloneNode(true);
   var view = this.toView(node, obj);
-  var react = reactive(node, obj, view);
-  this.el.appendChild(node);
+  var react = Reactive(node, obj, view);
+  removed(node, react.unsubAll.bind(react));
+  if (top && this.el.children.length) {
+    this.el.insertBefore(node, this.el.firstChild);
+  } else {
+    this.el.appendChild(node);
+  }
   obj._reactive = react;
   this.emit('added', obj);
 }
@@ -126,7 +148,8 @@ List.prototype.bind = function (arr) {
   this.arr.forEach(function(obj) {
     var node = this.tmpl.cloneNode(true);
     var view = this.toView(node, obj);
-    var react = reactive(node, obj, view);
+    var react = Reactive(node, obj, view);
+    removed(node, react.unsubAll.bind(react));
     this.el.appendChild(node);
     obj._reactive = react;
   }.bind(this));

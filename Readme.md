@@ -4,6 +4,8 @@
 
   TODO: test
 
+  TODO: remove dom event listeners, as reactive limitation, currently not available.
+
 ## Installation
 
   Install with [component(1)](http://component.io):
