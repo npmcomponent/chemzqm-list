@@ -15,7 +15,6 @@
   "development": {
     "component/enumerable": "*",
     "component/dom": "*",
-    "component/model": "*",
     "visionmedia/mocha": "*",
     "chaijs/chai": "*"
   },
