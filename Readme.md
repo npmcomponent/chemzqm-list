@@ -2,15 +2,17 @@
 
   list view for add/remove/filter/reactive etc.
 
-  TODO: test
-
-  TODO: remove dom event listeners, as reactive limitation, currently not available.
 
 ## Installation
 
   Install with [component(1)](http://component.io):
 
     $ component install chemzqm/list
+
+## Events
+
+  * `added` triggered with the model object added by calling add method.
+  * `removed` triggered with the model object added by calling remove method.
 
 ## API
 
@@ -26,9 +28,11 @@
 
   Add obj to this list at bottom.
 
-### .remove(Number|String|Function)
+### .remove([Number|String|Function])
 
   Remove models from list by index or to-function string or function called by each model object
+  When arguments is empty, all models are removed.
+  **Note** `removed` event is not triggered when arguments is empty.
 
 ### .sort(fn, [desc])
 
