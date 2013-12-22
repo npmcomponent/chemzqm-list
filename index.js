@@ -37,6 +37,13 @@ var events = [
   'keyup'
 ];
 
+function traverse(node, fn) {
+  fn(node);
+  for (var i = 0; i < node.children.length; i++) {
+    var n = node.children[i];
+    traverse(n, fn);
+  }
+}
 /**
  * 
  * @param {Node} parent
@@ -51,12 +58,13 @@ function List(parent, template){
   var methods = this.methods = [];
   events.forEach(function(name) {
     var attr = 'on-' + name;
-    var el = query('[' + attr + ']', this.tmpl);
-    if (el) {
-      var method = el.getAttribute(attr);
-      methods.push(method);
-    }
-  })
+    traverse(this.tmpl, function(node) {
+      if (node.hasAttribute(attr)) {
+        var method = node.getAttribute(attr);
+        methods.push(method);
+      }
+    })
+  }.bind(this));
   this.arr = array();
 }
 
@@ -120,6 +128,13 @@ function remove(array, obj) {
 List.prototype.remove = function (fn) {
   var objs = [];
   var arr = this.arr;
+  if (arguments.length === 0) {
+    this.arr.forEach(function(obj) {
+      var el = obj._reactive.el;
+      this.el.removeChild(el);
+    }.bind(this));
+    return;
+  }
   if (typeof fn == 'object') {
     objs.push(fn);
   }
@@ -140,10 +155,7 @@ List.prototype.remove = function (fn) {
  * @api public
  */
 List.prototype.bind = function (arr) {
-  this.arr.forEach(function(obj) {
-    var el = obj._reactive.el;
-    this.el.removeChild(el);
-  }.bind(this));
+  this.remove();
   this.arr = (arr instanceof array) ? arr : array(arr);
   this.arr.forEach(function(obj) {
     var node = this.tmpl.cloneNode(true);
