@@ -12,7 +12,7 @@
 ## Events
 
   * `added` triggered with the model object added by calling add method.
-  * `removed` triggered with the model object added by calling remove method.
+  * `removed` triggered with the model object removed by calling remove method.
 
 ## API
 
