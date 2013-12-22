@@ -131,8 +131,9 @@ List.prototype.remove = function (fn) {
   if (arguments.length === 0) {
     this.arr.forEach(function(obj) {
       var el = obj._reactive.el;
-      this.el.removeChild(el);
+      el.parentNode.removeChild(el);
     }.bind(this));
+    this.arr = array();
     return;
   }
   if (typeof fn == 'object') {
