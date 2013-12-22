@@ -139,6 +139,8 @@ List.prototype.remove = function (fn) {
     objs.push(fn);
   }
   else if (typeof fn == 'number') {
+    var obj = arr[fn];
+    if(!obj) throw new Error('can\'t find model at index ' + fn);
     objs.push(arr[fn]);
   } else {
     objs = arr.select(fn);
