@@ -1,6 +1,6 @@
 # list
 
-  list view for add/remove/filter/reactive etc.
+  list view component for add, remove, filter, sort, reactive etc.
 
 
 ## Installation
@@ -13,6 +13,15 @@
 
   * `added` triggered with the model object added by calling add method.
   * `removed` triggered with the model object removed by calling remove method.
+## Bind event
+
+You can bind event like [component/reactive](https://github.com/component/reactive):
+
+``` html
+  <button on-click="destroy">remove</button>
+```
+
+Add function `destroy` to your list instance and it will be called with `event object`, `item element` and relative `model object`.
 
 ## API
 
