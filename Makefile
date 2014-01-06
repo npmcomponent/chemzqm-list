@@ -10,7 +10,7 @@ components: component.json
 	@component install --dev
 
 test:
-	@mocha-phantomjs -R list test/index.html
+	@mocha-phantomjs -R dot test/index.html
 
 clean:
 	rm -fr build components
