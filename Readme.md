@@ -13,7 +13,8 @@
 
   * `added` triggered with the model object added by calling add method.
   * `removed` triggered with the model object removed by calling remove method.
-## Bind event
+
+## Event binding
 
 You can bind event like [component/reactive](https://github.com/component/reactive):
 
@@ -25,21 +26,21 @@ Add function `destroy` to your list instance and it will be called with `event o
 
 ## API
 
-### List(parent, template)
+### List(parent, Element)
 
-  User template for reactive view which append to parent
+  Use element(could be html string) for reactive view which append to parent
 
 ### .bind(Array)
 
-  Bind array to list.
+  Bind array of model objects to list.
 
 ### .add(obj, [top])
 
-  Add obj to this list at bottom.
+  Add obj to this list at bottom or top (when top is true).
 
 ### .remove([Number|String|Function])
 
-  Remove models from list by index or to-function string or function called by each model object
+  Remove models from list by index or to-function string or function called by each model object.
   When arguments is empty, all models are removed.
   **Note** `removed` event is not triggered when arguments is empty.
 
