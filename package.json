@@ -1,0 +1,29 @@
+{
+  "name": "list",
+  "version": "0.0.0",
+  "description": "list component",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "Make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chemzqm/list.git"
+  },
+  "keywords": [
+    "list",
+    "reactive"
+  ],
+  "author": "chemzqm@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chemzqm/list/issues"
+  },
+  "homepage": "https://github.com/chemzqm/list",
+  "devDependencies": {
+    "component-test2": "~0.1.2"
+  }
+}
