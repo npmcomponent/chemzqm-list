@@ -150,7 +150,7 @@ describe('#bind(array)', function() {
 })
 
 describe('#sort(fn)', function() {
-  it('should sort the list with fn', function() {
+  it('should sort the list with ascend fn', function() {
     var tmpl = '<div>{id}</div>';
     var list = new List(parentNode, tmpl);
     var users = [
@@ -164,6 +164,7 @@ describe('#sort(fn)', function() {
       return a.id - b.id;
     })
     var ids = _(dom(parentNode).find('div')).map('text()');
+    console.log(ids.value);
     expect(ids.first()).to.equal('1');
     expect(ids.last()).to.equal('4');
   })
@@ -283,7 +284,7 @@ describe('events', function() {
     expect(model).to.equal(user);
   })
 
-  it('should not trigger removed event when use remove without arguments', function() {
+  it('should not trigger removed event when call remove without arguments', function() {
     var tmpl = '<div>{name}</div>';
     var list = new List(parentNode, tmpl);
     var user = { name: 'tobi' };

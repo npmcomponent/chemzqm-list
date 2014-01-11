@@ -1,18 +1,17 @@
 
 build: components index.js
 	@component build --dev
-	@touch build
-
-start:
-	@component serve &
 
 components: component.json
 	@component install --dev
 
 test:
-	@mocha-phantomjs -R dot test/index.html
+	@./node_modules/.bin/component-test phantom
+
+test-browser:
+	@./node_modules/.bin/component-test browser
 
 clean:
 	rm -fr build components
 
-.PHONY: clean start test
+.PHONY: clean test test-browser
