@@ -11,7 +11,7 @@
     </style>
   </head>
   <body>
-    <input id="filter" type="text" name="">
+    <input id="filter" type="text" name="name">
     <ul>
     </ul>
     <div class="user">
@@ -83,6 +83,15 @@
           return a.age - b.age;
         });
       }, 3000)
+      //filter
+      var f = document.getElementById('filter');
+      f.oninput = function() {
+        var v = f.value.replace(/\s+/g, '\\s*');
+        var reg = new RegExp(v, 'i');
+        list.filter(function(model){
+          return reg.test(model.first) || reg.test(model.last);
+        })
+      }
     </script>
   </body>
 </html>
