@@ -6,10 +6,10 @@ components: component.json
 	@component install --dev
 
 test:
-	@./node_modules/.bin/component-test phantom
+	@component-test phantom
 
 test-browser:
-	@./node_modules/.bin/component-test browser
+	@component-test browser
 
 clean:
 	rm -fr build components

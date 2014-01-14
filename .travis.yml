@@ -1,4 +1,6 @@
 install:
   - npm install -g component-test2
+  - npm install -g component
 script:
+  - make
   - make test
