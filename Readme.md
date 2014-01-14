@@ -2,6 +2,8 @@
 
   list view component for add, remove, filter, sort, reactive etc.
 
+  [demo](http://chemzqm.github.io/list/)
+
 
 ## Installation
 
