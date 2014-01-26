@@ -163,9 +163,10 @@ describe('#sort(fn)', function() {
     list.sort(function(a, b) {
       return a.id - b.id;
     })
-    var ids = _(dom(parentNode).find('div')).map('text()');
-    expect(ids.first()).to.equal('1');
-    expect(ids.last()).to.equal('4');
+    var ids = dom(parentNode).find('div').map(function (el) {
+      return el.innerHTML;
+    });
+    expect(ids.toArray()).to.deep.equal(['1', '2', '3', '4']);
   })
 
   it('should sort the list descend with fn', function() {
@@ -181,9 +182,8 @@ describe('#sort(fn)', function() {
     list.sort(function(a, b) {
       return a.id - b.id;
     }, true)
-    var ids = _(dom(parentNode).find('div')).map('text()');
-    expect(ids.first()).to.equal('4');
-    expect(ids.last()).to.equal('1');
+    var ids = dom(parentNode).find('div').map('innerHTML');
+    expect(ids.toArray()).to.deep.equal(['4', '3', '2', '1']);
   })
 })
 
@@ -218,12 +218,11 @@ describe('#filter([fn])', function() {
     list.bind(users);
     list.filter('id > 2');
     list.filter();
-    var count = _(dom(parentNode).find('div'))
-          .map('css("display")')
-          .count(function(display) {
-            return display === 'block';
-          });
-    expect(count).to.equal(4);
+    var blocks = dom(parentNode).find('div')
+          .filter(function (el) {
+            return dom(el).css('display') == 'block';
+          })
+    expect(blocks.length).to.equal(4);
   })
 })
 
