@@ -1,4 +1,6 @@
 # list
+  
+  [![Build Status](https://secure.travis-ci.org/chemzqm/list.png)](http://travis-ci.org/chemzqm/list)
 
   list view component for add, remove, filter, sort, reactive etc.
 
