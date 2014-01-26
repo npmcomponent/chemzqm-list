@@ -164,7 +164,6 @@ describe('#sort(fn)', function() {
       return a.id - b.id;
     })
     var ids = _(dom(parentNode).find('div')).map('text()');
-    console.log(ids.value);
     expect(ids.first()).to.equal('1');
     expect(ids.last()).to.equal('4');
   })
