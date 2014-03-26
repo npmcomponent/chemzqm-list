@@ -3,93 +3,24 @@ var Emitter = require('emitter');
 var Reactive = require('reactive');
 var domify = require ('domify');
 var query = require ('query');
-var removed = require('removed');
 var styles = window.getComputedStyle;
 
-//hack of reactive for unsubscribe event listeners
-Reactive.prototype.sub = function(prop, fn){
-  var subs = this.el.subs = this.el.subs || {};
-  subs[prop] = fn;
-  this.adapter.subscribe(this.model, prop, fn);
-  return this;
-}
-
-Reactive.prototype.unsubAll = function(){
-  var subs = this.el.subs;
-  for(var prop in subs){
-    this.unsub(prop, subs[prop]);
-  }
-  return this;
-};
-
-var events = [
-  'change',
-  'click',
-  'dblclick',
-  'mousedown',
-  'mouseup',
-  'blur',
-  'focus',
-  'input',
-  'submit',
-  'keydown',
-  'keypress',
-  'keyup'
-];
-
-function traverse(node, fn) {
-  fn(node);
-  for (var i = 0; i < node.children.length; i++) {
-    var n = node.children[i];
-    traverse(n, fn);
-  }
-}
 /**
  * 
  * @param {Node} parent
  * @param {String|Node} template
  * @api public
  */
-function List(parent, template){
+function List(parent, template, view){
   if (! this instanceof List) return new List(parent, template);
   if (typeof template === 'string') template = domify(template);
   this.el = parent;
   this.tmpl = template;
-  var methods = this.methods = [];
-  events.forEach(function(name) {
-    var attr = 'on-' + name;
-    traverse(this.tmpl, function(node) {
-      if (node.hasAttribute(attr)) {
-        var method = node.getAttribute(attr);
-        methods.push(method);
-      }
-    })
-  }.bind(this));
+  this.view = view;
   this.arr = array();
 }
 
 Emitter(List.prototype);
-
-/**
- * Get view object from element and obj
- * @param {HTMLElement} el
- * @param {Object} obj
- * @api private
- */
-List.prototype.toView = function(el, obj) {
-  var view = {};
-  var self = this;
-  this.methods.forEach(function(m) {
-    var fn = self[m];
-    if (typeof fn !== 'function') {
-      throw new Error('method .' + m + '() missing');
-    }
-    view[m] = function(e) {
-      fn.call(self, e, el, obj);
-    }
-  })
-  return view;
-}
 
 /**
  * Add obj to list with optional at top
@@ -98,12 +29,12 @@ List.prototype.toView = function(el, obj) {
  * @api public
  */
 List.prototype.add = function(obj, top) {
+  var opt;
   var method = top ? 'unshift' : 'push';
   this.arr[method](obj);
   var node = this.tmpl.cloneNode(true);
-  var view = this.toView(node, obj);
-  var react = Reactive(node, obj, view);
-  removed(node, react.unsubAll.bind(react));
+  if (this.view) opt = { delegate: this.view };
+  var react = Reactive(node, obj, opt);
   if (top && this.el.children.length) {
     this.el.insertBefore(node, this.el.firstChild);
   } else {
@@ -116,8 +47,7 @@ List.prototype.add = function(obj, top) {
 function remove(array, obj) {
   var i = array.indexOf(obj);
   array.splice(i, 1);
-  var el = obj._reactive.el;
-  el.parentNode.removeChild(el);
+  obj._reactive.destroy();
 }
 
 /**
@@ -130,8 +60,7 @@ List.prototype.remove = function (fn) {
   var arr = this.arr;
   if (arguments.length === 0) {
     this.arr.forEach(function(obj) {
-      var el = obj._reactive.el;
-      el.parentNode.removeChild(el);
+      obj._reactive.destroy();
     }.bind(this));
     this.arr = array();
     return;
@@ -158,13 +87,13 @@ List.prototype.remove = function (fn) {
  * @api public
  */
 List.prototype.bind = function (arr) {
+  var opt;
   this.remove();
   this.arr = (arr instanceof array) ? arr : array(arr);
   this.arr.forEach(function(obj) {
     var node = this.tmpl.cloneNode(true);
-    var view = this.toView(node, obj);
-    var react = Reactive(node, obj, view);
-    removed(node, react.unsubAll.bind(react));
+    if (this.view) opt = { delegate: this.view };
+    var react = Reactive(node, obj, opt);
     this.el.appendChild(node);
     obj._reactive = react;
   }.bind(this));

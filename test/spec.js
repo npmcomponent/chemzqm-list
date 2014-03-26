@@ -240,18 +240,16 @@ describe('reactive', function() {
 
   it('should trigger the binding function', function() {
     var tmpl = domify('<button on-click="action"><em>{name}</em></button>');
-    var list = new List(parentNode, tmpl);
-    var model;
     var node;
-    list.action = function(e, el, obj) {
-      node = el;
-      model = obj;
-    }
+    var list = new List(parentNode, tmpl, {
+      action: function(e, reactive) {
+        node = reactive.el;
+      }
+    });
     var user = {name: 'jonathon'};
     list.add(user);
     list.add({ name: 'jack' });
     parentNode.firstChild.click();
-    expect(model).to.equal(user);
     expect(node).to.equal(parentNode.firstChild);
   })
 })

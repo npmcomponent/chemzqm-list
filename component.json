@@ -2,15 +2,14 @@
   "name": "list",
   "repo": "chemzqm/list",
   "description": "list view for add/remove/filter/reactive etc.",
-  "version": "0.0.1",
+  "version": "1.1.1",
   "keywords": [],
   "dependencies": {
-    "component/domify": "*",
-    "component/query": "*",
-    "component/removed": "*",
-    "component/emitter": "*",
-    "matthewmueller/array": "*",
-    "component/reactive": "*"
+    "component/domify": "1.2.2",
+    "component/query": "0.0.3",
+    "component/emitter": "1.1.1",
+    "matthewmueller/array": "0.4.3",
+    "chemzqm/reactive": "*"
   },
   "development": {
     "component/enumerable": "*",

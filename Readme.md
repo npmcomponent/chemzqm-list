@@ -6,6 +6,18 @@
 
   [demo](http://chemzqm.github.io/list/)
 
+``` js
+var List = require('list');
+var parentNode = document.getElementById('ul');
+var list = new list(parentNode, '<li><a date-href="/user/{id}">{name}</a><button on-click="remove">remove</button></li>', {
+    remove: function (e, reactive) {
+      var user = reactive.model;
+      console.log(user);
+    }
+});
+list.bind(users);
+```
+
 
 ## Installation
 
@@ -26,13 +38,13 @@ You can bind event like [component/reactive](https://github.com/component/reacti
   <button on-click="destroy">remove</button>
 ```
 
-Add function `destroy` to your list instance and it will be called with `event object`, `item element` and relative `model object`.
+Add function `destroy` to your list instance and it will be called with `event object`, and relative `reactive` instance.
 
 ## API
 
-### List(parent, Element)
+### List(parent, Element, [view])
 
-  Use element(could be html string) for reactive view which append to parent
+  Use element(could be html string) for reactive which append to parent and bind to optional view.
 
 ### .bind(Array)
 
