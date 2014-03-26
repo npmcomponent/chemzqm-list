@@ -25,10 +25,11 @@
       var List = require('list');
       var tmpl = document.querySelector('.user');
       tmpl.parentNode.removeChild(tmpl);
-      var list = new List(parent, tmpl);
-      list.destroy = function(e, node, obj) {
-        list.remove(obj);
-      }
+      var list = new List(parent, tmpl, {
+        destroy: function (e, reactive) {
+          reactive.destroy();
+        }
+      });
 
       function User(obj) {
         var self = this;
