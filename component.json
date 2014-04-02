@@ -2,7 +2,7 @@
   "name": "list",
   "repo": "chemzqm/list",
   "description": "list view for add/remove/filter/reactive etc.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "keywords": [],
   "dependencies": {
     "component/domify": "1.2.2",
