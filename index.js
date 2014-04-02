@@ -1,8 +1,8 @@
-var array = require('array');
-var Emitter = require('emitter');
-var Reactive = require('reactive');
-var domify = require ('domify');
-var query = require ('query');
+var array = require('matthewmueller-array');
+var Emitter = require('component-emitter');
+var Reactive = require('chemzqm-reactive');
+var domify = require ('component-domify');
+var query = require ('component-query');
 var styles = window.getComputedStyle;
 
 /**
