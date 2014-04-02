@@ -13,7 +13,6 @@
   },
   "development": {
     "component/enumerable": "*",
-    "component/dom": "*",
     "visionmedia/mocha": "*",
     "chaijs/chai": "*"
   },

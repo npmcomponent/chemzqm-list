@@ -2,9 +2,19 @@
 var expect = require('chai').expect;
 var List = require('list');
 var domify = require ('domify');
-var dom = require ('dom');
 var _ = require ('enumerable');
 var Emitter = require ('emitter');
+
+function each(node, fn) {
+  if (! node.hasChildNodes( )) return;
+  var children = node.childNodes;
+  for (var i = 0, len = children.length; i < len; i++) {
+    var n = children[i];
+    if (n.nodeType == 1) {
+      fn(n);
+    }
+  }
+}
 
 
 var parentNode;
@@ -163,10 +173,11 @@ describe('#sort(fn)', function() {
     list.sort(function(a, b) {
       return a.id - b.id;
     })
-    var ids = dom(parentNode).find('div').map(function (el) {
-      return el.innerHTML;
-    });
-    expect(ids.toArray()).to.deep.equal(['1', '2', '3', '4']);
+    var ids = [];
+    each(parentNode, function (n) {
+      ids.push(n.innerHTML);
+    })
+    expect(ids).to.deep.equal(['1', '2', '3', '4']);
   })
 
   it('should sort the list descend with fn', function() {
@@ -182,8 +193,11 @@ describe('#sort(fn)', function() {
     list.sort(function(a, b) {
       return a.id - b.id;
     }, true)
-    var ids = dom(parentNode).find('div').map('innerHTML');
-    expect(ids.toArray()).to.deep.equal(['4', '3', '2', '1']);
+    var ids = [];
+    each(parentNode, function (n) {
+      ids.push(n.innerHTML);
+    })
+    expect(ids).to.deep.equal(['4', '3', '2', '1']);
   })
 })
 
@@ -206,7 +220,8 @@ describe('#filter([fn])', function() {
     expect(nodes[3].style.display).to.equal('block');
   })
 
-  it('should should show all the child nodes when filter is empty', function() {
+  it('should show all the child nodes when filter is empty', function() {
+    var styles = window.getComputedStyle;
     var tmpl = '<div>{id}</div>';
     var list = new List(parentNode, tmpl);
     var users = [
@@ -218,10 +233,12 @@ describe('#filter([fn])', function() {
     list.bind(users);
     list.filter('id > 2');
     list.filter();
-    var blocks = dom(parentNode).find('div')
-          .filter(function (el) {
-            return dom(el).css('display') == 'block';
-          })
+    var blocks = [];
+    each(parentNode, function (n) {
+      if (styles(n).display === 'block') {
+        blocks.push(n);
+      }
+    })
     expect(blocks.length).to.equal(4);
   })
 })
